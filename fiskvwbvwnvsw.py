@@ -9,9 +9,7 @@ sys.setrecursionlimit(100000)
 # Nama file Output
 FILENAME = "hasil_benchmark.csv"
 
-# ==========================================
 # 1. ALGORITMA BINARY SEARCH
-# ==========================================
 def binary_search_iterative(arr, target):
     low = 0
     high = len(arr) - 1
@@ -37,23 +35,18 @@ def binary_search_recursive(arr, low, high, target):
     else:
         return -1
 
-# ==========================================
 # 2. FUNGSI SIMPAN KE EXCEL (FORMAT TABEL)
-# ==========================================
 def simpan_ke_excel(n, t_iter, t_rec, loops, selisih, pemenang):
     file_exists = os.path.isfile(FILENAME)
     
     try:
-        # PENTING: delimiter=';' digunakan agar Excel Indonesia membacanya sebagai kolom terpisah
         with open(FILENAME, mode='a', newline='') as file:
             writer = csv.writer(file, delimiter=';')
             
-            # Header Tabel (Jika file baru)
             if not file_exists:
                 writer.writerow(["Input (N)", "Jumlah Loop", "Waktu Iteratif (ms)", "Waktu Rekursif (ms)", "Selisih (ms)", "Pemenang"])
             
             # Isi Data
-            # Kita ganti titik desimal '.' jadi koma ',' agar Excel Indonesia membacanya sebagai angka
             t_iter_str = f"{t_iter:.6f}".replace('.', ',')
             t_rec_str = f"{t_rec:.6f}".replace('.', ',')
             selisih_str = f"{selisih:.6f}".replace('.', ',')
@@ -63,9 +56,7 @@ def simpan_ke_excel(n, t_iter, t_rec, loops, selisih, pemenang):
     except PermissionError:
         print(f"\n[ERROR] Tutup dulu file '{FILENAME}' di Excel sebelum lanjut!")
 
-# ==========================================
 # 3. PROGRAM UTAMA
-# ==========================================
 def main():
     print("\n==========================================================================")
     print("                 PROGRAM ANALISIS BINARY SEARCH")
@@ -93,12 +84,11 @@ def main():
         data_id = list(range(0, n * 2, 2))
         target = data_id[-1] # Worst case
         
-        # Auto-detect loops
         if n < 1000: loops = 100000
         elif n < 100000: loops = 10000
         else: loops = 1000
             
-        # --- Proses Benchmarking (Silent) ---
+        # Proses Benchmarking (Silent)
         # Iteratif
         start = time.perf_counter()
         for _ in range(loops): binary_search_iterative(data_id, target)
@@ -113,13 +103,10 @@ def main():
         selisih = abs(t_iter - t_rec)
         pemenang = "Iteratif" if t_iter < t_rec else "Rekursif"
         
-        # --- Simpan & Tampilkan ---
         simpan_ke_excel(n, t_iter, t_rec, loops, selisih, pemenang)
         
-        # Update tampilan tabel di terminal (Menimpa baris input)
-        # Menggunakan format string agar lurus
-        sys.stdout.write("\033[F") # Cursor up 1 line
-        sys.stdout.write("\033[K") # Clear line
+        sys.stdout.write("\033[F") 
+        sys.stdout.write("\033[K") 
         print(f"{nomor:<3} | {n:<12} | {t_iter:<15.4f} | {t_rec:<15.4f} | {pemenang} Unggul")
         
         nomor += 1
