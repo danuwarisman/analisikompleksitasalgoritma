@@ -1,4 +1,1 @@
 Input (N);Jumlah Loop;Waktu Iteratif (ms);Waktu Rekursif (ms);Selisih (ms);Pemenang
-12;100000;103,904649;81,392904;22,511745;Rekursif
-1234;10000;44,407719;56,433747;12,026028;Iteratif
-123456;1000;3,950126;5,259317;1,309191;Iteratif
